@@ -1,28 +1,29 @@
 import 'package:abc_kids/blocs/digitar_palavra_bloc.dart';
+import 'package:abc_kids/pages/cardEnterWord.dart';
 import 'package:abc_kids/widgets/carregando.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:abc_kids/pages/card_digitar_palavra.dart';
 import 'package:abc_kids/widgets/background_image.dart';
 import 'package:flutter/services.dart';
 import 'package:audioplayers/audio_cache.dart';
 
 class ModuloDigitarPalavra extends StatefulWidget {
   final int contador;
-  final String nivel;
+  final String level;
 
-  ModuloDigitarPalavra({Key key, @required this.contador, this.nivel})
+  ModuloDigitarPalavra({Key key, @required this.contador, this.level})
       : super(key: key);
   @override
   _ModuloDigitarPalavraState createState() =>
-      _ModuloDigitarPalavraState(contador, nivel);
+      _ModuloDigitarPalavraState(contador, level);
 }
 
 class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
   DigitarPalavraBloc bloc = DigitarPalavraBloc();
 
-  static AudioCache audioBotao = new AudioCache(prefix: "audios/");
+  static AudioCache audioButton = new AudioCache(prefix: "audios/");
   static AudioCache audioExplicandoModulo = new AudioCache(prefix: "audios/");
   static AudioCache audioLetra = new AudioCache(prefix: "audios/");
   static AudioCache audioResposta = new AudioCache(prefix: "audios/");
@@ -30,13 +31,21 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
   String palavraBuscada = "";
 
   int contador;
-  String nivel;
-  _ModuloDigitarPalavraState(this.contador, this.nivel);
+  String level;
+  _ModuloDigitarPalavraState(this.contador, this.level);
+
+  double _maxValue(double s, double max) {
+    if (s < max) {
+      return s;
+    } else {
+      return max;
+    }
+  }
 
   void _atualizarPalavra(int contadorResposta, String nivelResposta) {
     setState(() {
       contador = contadorResposta;
-      nivel = nivelResposta;
+      level = nivelResposta;
     });
   }
 
@@ -64,7 +73,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0)),
               onPressed: () {
-                audioBotao.play('som_botao.mp3');
+                audioButton.play('som_botao.mp3');
                 Navigator.of(context).pop();
               },
               icon: Icon(
@@ -109,7 +118,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0)),
               onPressed: () {
-                audioBotao.play('som_botao.mp3');
+                audioButton.play('som_botao.mp3');
                 Navigator.of(context).pop();
               },
               icon: Icon(
@@ -154,7 +163,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0)),
               onPressed: () {
-                audioBotao.play('som_botao.mp3');
+                audioButton.play('som_botao.mp3');
                 Navigator.of(context).pop();
               },
               icon: Icon(
@@ -191,8 +200,10 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
+    Size size = mediaQuery.size;
     return StreamBuilder(
-        stream: Firestore.instance.collection(nivel).snapshots(),
+        stream: Firestore.instance.collection(level).snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
@@ -213,19 +224,22 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0)),
                           onPressed: () {
-                            audioBotao.play('som_botao.mp3');
-                            Navigator.pop(context, CardDigitarPalavra());
+                            audioButton.play('som_botao.mp3');
+                            Navigator.pop(context, CardEnterWord());
                           },
-                          icon: Icon(
-                            FontAwesomeIcons.chevronCircleLeft,
-                            color: Colors.white,
-                          ),
-                          label: Text(
-                            'Voltar',
+                          label: AutoSizeText(
+                            "Voltar",
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 25.0,
+                                fontSize: _maxValue(size.width * 0.04, 28),
                                 fontFamily: "SnigletRegular"),
+                            maxLines: 1,
+                          ),
+                          textColor: Colors.white,
+                          icon: Icon(
+                            FontAwesomeIcons.angleLeft,
+                            color: Colors.white,
+                            size: _maxValue(size.width * 0.05, 35),
                           ),
                         ),
                         Padding(
@@ -237,7 +251,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(100.0)),
                             onPressed: () {
-                              audioBotao.play('som_botao.mp3');
+                              audioButton.play('som_botao.mp3');
                               audioExplicandoModulo.play(
                                   "audios_explicacao/audioModuloDigitarPalavra.mp3");
                             },
@@ -255,14 +269,14 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15.0)),
                             onPressed: () {
-                              audioBotao.play('som_botao.mp3');
+                              audioButton.play('som_botao.mp3');
                               contador++;
                               if (contador <= 9) {
-                                _atualizarPalavra(contador, nivel);
+                                _atualizarPalavra(contador, level);
                                 _apagarPalavra();
                                 print(bloc.getPalavra);
                               } else if (contador > 9) {
-                                Navigator.pop(context, CardDigitarPalavra());
+                                Navigator.pop(context, CardEnterWord());
                                 audioResposta.play(
                                     'audios_explicacao/voceTerminouEsteNivelEscolhaoProximoNivelParaJogar.mp3');
                                 _alertVoceTerminouEsteNivel();
@@ -326,7 +340,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15.0)),
                               onPressed: () {
-                                audioBotao.play('som_botao.mp3');
+                                audioButton.play('som_botao.mp3');
                                 bloc.inApagarLetra.add(true);
                               },
                               label: Text(
@@ -390,18 +404,17 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15.0)),
                               onPressed: () {
-                                audioBotao.play('som_botao.mp3');
+                                audioButton.play('som_botao.mp3');
                                 if (bloc.getPalavra == palavraBuscada) {
                                   contador++;
                                   if (contador <= 9) {
                                     _alertVoceAcertou();
                                     audioResposta.play(
                                         "audios_explicacao/voceAcertouVamosParaaProximaPalavra.mp3");
-                                    _atualizarPalavra(contador, nivel);
+                                    _atualizarPalavra(contador, level);
                                     _apagarPalavra();
                                   } else if (contador > 9) {
-                                    Navigator.pop(
-                                        context, CardDigitarPalavra());
+                                    Navigator.pop(context, CardEnterWord());
                                     audioResposta.play(
                                         'audios_explicacao/voceTerminouEsteNivelEscolhaoProximoNivelParaJogar.mp3');
                                     _alertVoceTerminouEsteNivel();
@@ -448,7 +461,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra.play("vogais_acento/ã.mp3");
                                       bloc.inDigitarLetra.add("ã");
                                     },
@@ -471,7 +484,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra.play("vogais_acento/õ.mp3");
                                       bloc.inDigitarLetra.add("õ");
                                     },
@@ -494,7 +507,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra.play("vogais_acento/á.mp3");
                                       bloc.inDigitarLetra.add("á");
                                     },
@@ -517,7 +530,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra.play("vogais_acento/é.mp3");
                                       bloc.inDigitarLetra.add("é");
                                     },
@@ -540,7 +553,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra.play("vogais_acento/í.mp3");
                                       bloc.inDigitarLetra.add("í");
                                     },
@@ -563,7 +576,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra.play("vogais_acento/ó.mp3");
                                       bloc.inDigitarLetra.add("ó");
                                     },
@@ -586,7 +599,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra.play("vogais_acento/ú.mp3");
                                       bloc.inDigitarLetra.add("ú");
                                     },
@@ -609,7 +622,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra.play("vogais_acento/â.mp3");
                                       bloc.inDigitarLetra.add("â");
                                     },
@@ -632,7 +645,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra.play("vogais_acento/ê.mp3");
                                       bloc.inDigitarLetra.add("ê");
                                     },
@@ -655,7 +668,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra.play("vogais_acento/ô.mp3");
                                       bloc.inDigitarLetra.add("ô");
                                     },
@@ -678,7 +691,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra.play("vogais_acento/à.mp3");
                                       bloc.inDigitarLetra.add("à");
                                     },
@@ -708,7 +721,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/a.mp3");
                                       bloc.inDigitarLetra.add("a");
@@ -732,7 +745,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/b.mp3");
                                       bloc.inDigitarLetra.add("b");
@@ -756,7 +769,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/c.mp3");
                                       bloc.inDigitarLetra.add("c");
@@ -780,7 +793,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/d.mp3");
                                       bloc.inDigitarLetra.add("d");
@@ -804,7 +817,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/e.mp3");
                                       bloc.inDigitarLetra.add("e");
@@ -828,7 +841,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/f.mp3");
                                       bloc.inDigitarLetra.add("f");
@@ -852,7 +865,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/g.mp3");
                                       bloc.inDigitarLetra.add("g");
@@ -876,7 +889,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/h.mp3");
                                       bloc.inDigitarLetra.add("h");
@@ -900,7 +913,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/i.mp3");
                                       bloc.inDigitarLetra.add("i");
@@ -924,7 +937,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/j.mp3");
                                       bloc.inDigitarLetra.add("j");
@@ -948,7 +961,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/k.mp3");
                                       bloc.inDigitarLetra.add("k");
@@ -972,7 +985,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/l.mp3");
                                       bloc.inDigitarLetra.add("l");
@@ -996,7 +1009,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/m.mp3");
                                       bloc.inDigitarLetra.add("m");
@@ -1027,7 +1040,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/n.mp3");
                                       bloc.inDigitarLetra.add("n");
@@ -1051,7 +1064,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/o.mp3");
                                       bloc.inDigitarLetra.add("o");
@@ -1075,7 +1088,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/p.mp3");
                                       bloc.inDigitarLetra.add("p");
@@ -1099,7 +1112,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/q.mp3");
                                       bloc.inDigitarLetra.add("q");
@@ -1123,7 +1136,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/r.mp3");
                                       bloc.inDigitarLetra.add("r");
@@ -1147,7 +1160,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/s.mp3");
                                       bloc.inDigitarLetra.add("s");
@@ -1171,7 +1184,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/t.mp3");
                                       bloc.inDigitarLetra.add("t");
@@ -1195,7 +1208,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/u.mp3");
                                       bloc.inDigitarLetra.add("u");
@@ -1219,7 +1232,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/v.mp3");
                                       bloc.inDigitarLetra.add("v");
@@ -1243,7 +1256,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/w.mp3");
                                       bloc.inDigitarLetra.add("w");
@@ -1267,7 +1280,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/x.mp3");
                                       bloc.inDigitarLetra.add("x");
@@ -1291,7 +1304,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
                                       audioLetra
                                           .play("alfabeto_portugues/y.mp3");
                                       bloc.inDigitarLetra.add("y");
@@ -1315,7 +1328,7 @@ class _ModuloDigitarPalavraState extends State<ModuloDigitarPalavra> {
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     onPressed: () {
-                                      audioBotao.play("som_botao.mp3");
+                                      audioButton.play("som_botao.mp3");
 
                                       audioLetra
                                           .play("alfabeto_portugues/z.mp3");

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:abc_kids/pages/home_page.dart';
+import 'package:abc_kids/pages/homePage.dart';
 import 'dart:async';
 import 'package:permission_handler/permission_handler.dart';
 
 class ContainerRenderizarHome extends StatefulWidget {
   @override
-  _ContainerRenderizarHomeState createState() => _ContainerRenderizarHomeState();
+  _ContainerRenderizarHomeState createState() =>
+      _ContainerRenderizarHomeState();
 }
 
 class _ContainerRenderizarHomeState extends State<ContainerRenderizarHome> {
@@ -18,6 +19,7 @@ class _ContainerRenderizarHomeState extends State<ContainerRenderizarHome> {
     requestPermission(_permissionGroup);
     loadData();
   }
+
   onDoneLoading() async {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => HomePage()));
@@ -39,7 +41,10 @@ class _ContainerRenderizarHomeState extends State<ContainerRenderizarHome> {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(),
-                child: Image.asset("images/logoRedonda.png", height: 250.0,),
+                child: Image.asset(
+                  "images/logoRedonda.png",
+                  height: 250.0,
+                ),
               ),
               Padding(
                 padding: EdgeInsets.only(top: 10.0),
@@ -53,12 +58,13 @@ class _ContainerRenderizarHomeState extends State<ContainerRenderizarHome> {
       ),
     );
   }
+
   void checkServiceStatus(BuildContext context, PermissionGroup permission) {
     PermissionHandler()
         .checkServiceStatus(permission)
         .then((ServiceStatus serviceStatus) {
       final SnackBar snackBar =
-      SnackBar(content: Text(serviceStatus.toString()));
+          SnackBar(content: Text(serviceStatus.toString()));
 
       Scaffold.of(context).showSnackBar(snackBar);
     });
@@ -67,7 +73,7 @@ class _ContainerRenderizarHomeState extends State<ContainerRenderizarHome> {
   Future<void> requestPermission(PermissionGroup permission) async {
     final List<PermissionGroup> permissions = <PermissionGroup>[permission];
     final Map<PermissionGroup, PermissionStatus> permissionRequestResult =
-    await PermissionHandler().requestPermissions(permissions);
+        await PermissionHandler().requestPermissions(permissions);
 
     setState(() {
       print(permissionRequestResult);

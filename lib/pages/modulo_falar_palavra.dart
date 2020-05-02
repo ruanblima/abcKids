@@ -1,12 +1,12 @@
 import 'dart:async';
 
+import 'package:abc_kids/pages/cardSpeakWord.dart';
 import 'package:abc_kids/widgets/carregando.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:abc_kids/widgets/background_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:abc_kids/pages/card_falar_palavra.dart';
-import 'package:abc_kids/pages/home_page.dart';
+import 'package:abc_kids/pages/homePage.dart';
 import 'package:flutter/services.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:speech_recognition/speech_recognition.dart';
@@ -28,13 +28,13 @@ class Language {
 
 class ModuloFalarPalavra extends StatefulWidget {
   final int contador;
-  final String nivel;
+  final String level;
 
-  ModuloFalarPalavra({Key key, @required this.contador, this.nivel})
+  ModuloFalarPalavra({Key key, @required this.contador, this.level})
       : super(key: key);
   @override
   _ModuloFalarPalavraState createState() =>
-      _ModuloFalarPalavraState(contador, nivel);
+      _ModuloFalarPalavraState(contador, level);
 }
 
 class _ModuloFalarPalavraState extends State<ModuloFalarPalavra> {
@@ -58,13 +58,13 @@ class _ModuloFalarPalavraState extends State<ModuloFalarPalavra> {
   String palavraBuscada = "";
 
   int contador;
-  String nivel;
-  _ModuloFalarPalavraState(this.contador, this.nivel);
+  String level;
+  _ModuloFalarPalavraState(this.contador, this.level);
 
   void _atualizarPalavra(int contadorResposta, String nivelResposta) {
     setState(() {
       contador = contadorResposta;
-      nivel = nivelResposta;
+      level = nivelResposta;
     });
   }
 
@@ -233,34 +233,10 @@ class _ModuloFalarPalavraState extends State<ModuloFalarPalavra> {
         .then((res) => setState(() => _speechRecognitionAvailable = res));
   }
 
-  // void initSpeechRecognizer() {
-  //   _speechRecognition = SpeechRecognition();
-
-  //   _speechRecognition.setAvailabilityHandler(
-  //     (bool result) => setState(() => _isAvailable = result),
-  //   );
-
-  //   _speechRecognition.setRecognitionStartedHandler(
-  //     () => setState(() => _isListening = true),
-  //   );
-
-  //   _speechRecognition.setRecognitionResultHandler(
-  //     (String speech) => setState(() => resultText = speech),
-  //   );
-
-  //   _speechRecognition.setRecognitionCompleteHandler(
-  //     () => setState(() => _isListening = false),
-  //   );
-
-  //   _speechRecognition.activate().then(
-  //         (result) => setState(() => _isAvailable = result),
-  //       );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: Firestore.instance.collection(nivel).snapshots(),
+        stream: Firestore.instance.collection(level).snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
@@ -282,7 +258,7 @@ class _ModuloFalarPalavraState extends State<ModuloFalarPalavra> {
                               borderRadius: BorderRadius.circular(15.0)),
                           onPressed: () {
                             audioBotao.play('som_botao.mp3');
-                            Navigator.pop(context, CardFalarPalavra());
+                            Navigator.pop(context, CardSpeakWord());
                           },
                           icon: Icon(
                             FontAwesomeIcons.chevronCircleLeft,
@@ -326,9 +302,9 @@ class _ModuloFalarPalavraState extends State<ModuloFalarPalavra> {
                               audioBotao.play('som_botao.mp3');
                               contador++;
                               if (contador <= 9) {
-                                _atualizarPalavra(contador, nivel);
+                                _atualizarPalavra(contador, level);
                               } else if (contador > 9) {
-                                Navigator.pop(context, CardFalarPalavra());
+                                Navigator.pop(context, CardSpeakWord());
                                 audioResposta.play(
                                     'audios_explicacao/voceTerminouEsteNivelEscolhaoProximoNivelParaJogar.mp3');
                                 _alertVoceTerminouEsteNivel();
@@ -527,11 +503,11 @@ class _ModuloFalarPalavraState extends State<ModuloFalarPalavra> {
                                           _alertVoceAcertou();
                                           audioResposta.play(
                                               "audios_explicacao/voceAcertouVamosParaaProximaPalavra.mp3");
-                                          _atualizarPalavra(contador, nivel);
+                                          _atualizarPalavra(contador, level);
                                           _apagarPalavra();
                                         } else if (contador > 9) {
                                           Navigator.pop(
-                                              context, CardFalarPalavra());
+                                              context, CardSpeakWord());
                                           audioResposta.play(
                                               'audios_explicacao/voceTerminouEsteNivelEscolhaoProximoNivelParaJogar.mp3');
                                           _alertVoceTerminouEsteNivel();
