@@ -1,4 +1,4 @@
-import 'package:abc_kids/widgets/background_image.dart';
+import 'package:abc_kids/widgets/backgroundImage.dart';
 import 'package:abc_kids/widgets/bodyHome.dart';
 import 'package:flutter/material.dart';
 import 'package:abc_kids/widgets/rowHome.dart';

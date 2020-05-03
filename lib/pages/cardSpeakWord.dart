@@ -1,7 +1,7 @@
+import 'package:abc_kids/pages/moduleSpeakWord.dart';
 import 'package:flutter/material.dart';
-import 'package:abc_kids/widgets/background_image.dart';
+import 'package:abc_kids/widgets/backgroundImage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:abc_kids/pages/modulo_falar_palavra.dart';
 import 'package:abc_kids/widgets/rowCard.dart';
 import 'package:flutter/services.dart';
 import 'package:audioplayers/audio_cache.dart';
@@ -338,8 +338,8 @@ class _CardSpeakWordState extends State<CardSpeakWord> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          ModuloFalarPalavra(
-                                                              contador: 0,
+                                                          ModuleSpeakWord(
+                                                              counter: 0,
                                                               level: level)));
                                             }
                                           },

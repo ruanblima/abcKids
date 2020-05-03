@@ -1,8 +1,8 @@
+import 'package:abc_kids/pages/moduleEnterWord.dart';
 import 'package:abc_kids/widgets/rowCard.dart';
 import 'package:flutter/material.dart';
-import 'package:abc_kids/widgets/background_image.dart';
+import 'package:abc_kids/widgets/backgroundImage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:abc_kids/pages/modulo_digitar_palavra.dart';
 import 'package:flutter/services.dart';
 import 'package:audioplayers/audio_cache.dart';
 
@@ -347,8 +347,8 @@ class _CardEnterWordState extends State<CardEnterWord> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          ModuloDigitarPalavra(
-                                                              contador: 0,
+                                                          ModuleEnterWord(
+                                                              counter: 0,
                                                               level: level)));
                                             }
                                           },

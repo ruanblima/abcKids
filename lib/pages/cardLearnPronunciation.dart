@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:abc_kids/widgets/background_image.dart';
+import 'package:abc_kids/widgets/backgroundImage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'modulo_aprender_pronuncia.dart';
 import 'package:abc_kids/widgets/rowCard.dart';

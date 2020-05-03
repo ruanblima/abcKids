@@ -1,7 +1,7 @@
+import 'package:abc_kids/pages/moduleReadWord.dart';
 import 'package:flutter/material.dart';
-import 'package:abc_kids/widgets/background_image.dart';
+import 'package:abc_kids/widgets/backgroundImage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:abc_kids/pages/modulo_ler_palavra.dart';
 import 'package:abc_kids/widgets/rowCard.dart';
 import 'package:flutter/services.dart';
 import 'package:audioplayers/audio_cache.dart';
@@ -347,8 +347,8 @@ class _CardReadWordState extends State<CardReadWord> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          ModuloLerPalavra(
-                                                              contador: 0,
+                                                          ModuleReadWord(
+                                                              counter: 0,
                                                               level: level)));
                                             }
                                           },

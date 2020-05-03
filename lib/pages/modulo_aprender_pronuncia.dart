@@ -4,7 +4,7 @@ import 'package:abc_kids/widgets/musica_fundo.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:abc_kids/widgets/background_image.dart';
+import 'package:abc_kids/widgets/backgroundImage.dart';
 import 'package:flutter/services.dart';
 import 'package:audioplayers/audio_cache.dart';
 

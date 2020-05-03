@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Carregando extends StatefulWidget {
+class Loading extends StatefulWidget {
   @override
-  _CarregandoState createState() => _CarregandoState();
+  _LoadingState createState() => _LoadingState();
 }
 
-class _CarregandoState extends State<Carregando> {
+class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +19,10 @@ class _CarregandoState extends State<Carregando> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(),
-                  child: Image.asset("images/logoRedonda.png", height: 250.0,),
+                  child: Image.asset(
+                    "images/logoRedonda.png",
+                    height: 250.0,
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(),
