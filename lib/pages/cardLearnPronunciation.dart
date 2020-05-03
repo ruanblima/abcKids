@@ -1,20 +1,28 @@
+import 'package:abc_kids/pages/moduleLearnPronunciation.dart';
 import 'package:flutter/material.dart';
 import 'package:abc_kids/widgets/backgroundImage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'modulo_aprender_pronuncia.dart';
 import 'package:abc_kids/widgets/rowCard.dart';
 import 'package:flutter/services.dart';
 import 'package:audioplayers/audio_cache.dart';
 
 class CardLearnPronunciation extends StatefulWidget {
+  final String modeScreen;
+
+  CardLearnPronunciation({Key key, @required this.modeScreen})
+      : super(key: key);
   @override
-  _CardLearnPronunciationState createState() => _CardLearnPronunciationState();
+  _CardLearnPronunciationState createState() =>
+      _CardLearnPronunciationState(modeScreen);
 }
 
 class _CardLearnPronunciationState extends State<CardLearnPronunciation> {
   static AudioCache audioButton = new AudioCache(prefix: "audios/");
   static AudioCache audioExplainingCard = new AudioCache(prefix: "audios/");
   static AudioCache audioToChooseLanguage = new AudioCache(prefix: "audios/");
+
+  String modeScreen;
+  _CardLearnPronunciationState(this.modeScreen);
 
   double _maxValue(double s, double max) {
     if (s < max) {
@@ -24,7 +32,6 @@ class _CardLearnPronunciationState extends State<CardLearnPronunciation> {
     }
   }
 
-  String modeScreen = "";
   var shape1 =
       RoundedRectangleBorder(borderRadius: BorderRadius.circular(200.0));
   var shape2 =
@@ -65,6 +72,7 @@ class _CardLearnPronunciationState extends State<CardLearnPronunciation> {
   @override
   void initState() {
     super.initState();
+    _addEdge();
     audioExplainingCard
         .play("audios_explicacao/audioCardAprenderPronuncia.mp3");
     SystemChrome.setEnabledSystemUIOverlays([]);
@@ -77,6 +85,7 @@ class _CardLearnPronunciationState extends State<CardLearnPronunciation> {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     Size size = mediaQuery.size;
 
+    print("aqui: " + modeScreen);
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -247,7 +256,7 @@ class _CardLearnPronunciationState extends State<CardLearnPronunciation> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          ModuloAprenderPronuncia(
+                                                          ModuleLearnPronunciation(
                                                             modeScreen:
                                                                 modeScreen,
                                                           )));

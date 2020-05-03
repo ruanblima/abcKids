@@ -1,3 +1,4 @@
+import 'package:abc_kids/widgets/musicBackground.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:abc_kids/pages/homePage.dart';
@@ -11,6 +12,49 @@ class RowCard extends StatefulWidget {
 
 class _RowCardState extends State<RowCard> {
   static AudioCache audioButton = new AudioCache(prefix: "audios/");
+  var iconAudio;
+
+  @override
+  void initState() {
+    super.initState();
+    _iconStart();
+  }
+
+  _iconStart() {
+    setState(() {
+      if (MusicBackground.isStop == false) {
+        iconAudio = Icon(
+          FontAwesomeIcons.volumeUp,
+          color: Colors.white,
+          size: 47,
+        );
+      } else {
+        iconAudio = Icon(
+          FontAwesomeIcons.volumeMute,
+          color: Colors.white,
+          size: 47,
+        );
+      }
+    });
+  }
+
+  _iconAudio(size) {
+    setState(() {
+      if (MusicBackground.isStop == false) {
+        iconAudio = Icon(
+          FontAwesomeIcons.volumeUp,
+          color: Colors.white,
+          size: _maxValue(size.width * 0.08, 52.2),
+        );
+      } else {
+        iconAudio = Icon(
+          FontAwesomeIcons.volumeMute,
+          color: Colors.white,
+          size: _maxValue(size.width * 0.08, 52.2),
+        );
+      }
+    });
+  }
 
   double _maxValue(double s, double max) {
     if (s < max) {
@@ -75,12 +119,15 @@ class _RowCardState extends State<RowCard> {
                 borderRadius: BorderRadius.circular(100.0)),
             onPressed: () {
               audioButton.play('som_botao.mp3');
+              if (MusicBackground.isStop == false) {
+                MusicBackground.stop();
+                _iconAudio(size);
+              } else if (MusicBackground.isStop == true) {
+                MusicBackground.loop();
+                _iconAudio(size);
+              }
             },
-            child: Icon(
-              FontAwesomeIcons.volumeUp,
-              color: Colors.white,
-              size: _maxValue(size.width * 0.08, 52.2),
-            ),
+            child: iconAudio,
           ),
         ],
       ),

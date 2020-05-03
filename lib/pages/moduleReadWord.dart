@@ -373,9 +373,11 @@ class _ModuleReadWordState extends State<ModuleReadWord> {
                                     _speechRecognitionAvailable && !_isListening
                                         ? () => start()
                                         : null,
-                                child: Icon(FontAwesomeIcons.microphone,
-                                    color: Color(0xff54c4b7),
-                                    size: _maxValue(size.width * 0.079, 55)),
+                                child: Icon(
+                                  FontAwesomeIcons.microphone,
+                                  color: Color(0xff54c4b7),
+                                  size: _maxValue(size.width * 0.079, 55),
+                                ),
                               ),
                             ),
                           ],
@@ -385,10 +387,10 @@ class _ModuleReadWordState extends State<ModuleReadWord> {
                       Padding(
                         padding: EdgeInsets.only(),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Padding(
-                              padding: EdgeInsets.only(top: 10.0, left: 70),
+                              padding: EdgeInsets.only(top: 10.0),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(50.0),
                                 child: Container(
@@ -413,28 +415,10 @@ class _ModuleReadWordState extends State<ModuleReadWord> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(left: 45, top: 20),
+                              padding: EdgeInsets.only(),
                               child: MaterialButton(
-                                height: _maxValue(size.height * 0.167, 65),
-                                minWidth: _maxValue(size.width * 0.0633, 45),
-                                color: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(100.0)),
-                                onPressed: () {
-                                  audioButton.play('som_botao.mp3');
-                                },
-                                child: Icon(
-                                  FontAwesomeIcons.volumeUp,
-                                  color: Color(0xff54c4b7),
-                                  size: _maxValue(size.width * 0.047, 35),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 10.0, top: 20),
-                              child: MaterialButton(
-                                height: _maxValue(size.height * 0.167, 65),
-                                minWidth: _maxValue(size.width * 0.0633, 45),
+                                minWidth: 10,
+                                height: _maxValue(size.height * 0.224, 85),
                                 color: Colors.white,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(100.0)),
@@ -446,7 +430,7 @@ class _ModuleReadWordState extends State<ModuleReadWord> {
                                 child: Icon(
                                   FontAwesomeIcons.question,
                                   color: Color(0xff54c4b7),
-                                  size: _maxValue(size.width * 0.047, 35),
+                                  size: _maxValue(size.width * 0.079, 55),
                                 ),
                               ),
                             ),

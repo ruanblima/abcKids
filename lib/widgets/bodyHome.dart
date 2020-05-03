@@ -52,7 +52,9 @@ class _BodyHomeState extends State<BodyHome> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => CardLearnPronunciation()));
+                        builder: (context) => CardLearnPronunciation(
+                              modeScreen: "",
+                            )));
               },
               child: Container(
                 child:

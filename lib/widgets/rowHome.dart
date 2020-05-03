@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:abc_kids/widgets/musicBackground.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:audioplayers/audio_cache.dart';
@@ -11,6 +14,8 @@ class _RowHomeState extends State<RowHome> {
   static AudioCache audioButton = new AudioCache(prefix: "audios/");
   static AudioCache audioExplainingInitialScreen =
       new AudioCache(prefix: "audios/");
+
+  var iconAudio;
 
   double _maxValue(double s, double max) {
     if (s < max) {
@@ -70,6 +75,57 @@ class _RowHomeState extends State<RowHome> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _iconStart();
+  }
+
+  _iconStart() {
+    setState(() {
+      if (MusicBackground.isStop == false) {
+        iconAudio = Icon(
+          FontAwesomeIcons.volumeUp,
+          color: Colors.white,
+          size: 47,
+        );
+      } else {
+        iconAudio = Icon(
+          FontAwesomeIcons.volumeMute,
+          color: Colors.white,
+          size: 47,
+        );
+      }
+    });
+  }
+
+  _iconAudio(size) {
+    setState(() {
+      if (MusicBackground.isStop == false) {
+        iconAudio = Icon(
+          FontAwesomeIcons.volumeUp,
+          color: Colors.white,
+          size: _maxValue(size.width * 0.08, 52.2),
+        );
+      } else {
+        iconAudio = Icon(
+          FontAwesomeIcons.volumeMute,
+          color: Colors.white,
+          size: _maxValue(size.width * 0.08, 52.2),
+        );
+      }
+    });
+  }
+
+  _incrementVolume() {
+    MusicBackground.incrementVolume();
+  }
+
+  Future<Timer> loadData() async {
+    MusicBackground.decrementVolume();
+    return new Timer(Duration(seconds: 5), _incrementVolume());
+  }
+
+  @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     Size size = mediaQuery.size;
@@ -91,8 +147,10 @@ class _RowHomeState extends State<RowHome> {
                   borderRadius: BorderRadius.circular(100.0)),
               onPressed: () {
                 audioButton.play('som_botao.mp3');
+
                 audioExplainingInitialScreen
                     .play("audios_explicacao/audioParaTelaInicial.mp3");
+                loadData();
               },
               child: Icon(
                 FontAwesomeIcons.question,
@@ -118,12 +176,15 @@ class _RowHomeState extends State<RowHome> {
                   borderRadius: BorderRadius.circular(100.0)),
               onPressed: () {
                 audioButton.play('som_botao.mp3');
+                if (MusicBackground.isStop == false) {
+                  MusicBackground.stop();
+                  _iconAudio(size);
+                } else if (MusicBackground.isStop == true) {
+                  MusicBackground.loop();
+                  _iconAudio(size);
+                }
               },
-              child: Icon(
-                FontAwesomeIcons.volumeUp,
-                color: Colors.white,
-                size: _maxValue(size.width * 0.08, 52.2),
-              ),
+              child: iconAudio,
             ),
           ],
         ),

@@ -379,25 +379,6 @@ class _ModuleSpeakWordState extends State<ModuleSpeakWord> {
                                       EdgeInsets.only(top: size.height * 0.02),
                                   child: Row(
                                     children: <Widget>[
-                                      MaterialButton(
-                                        height:
-                                            _maxValue(size.height * 0.167, 65),
-                                        minWidth:
-                                            _maxValue(size.width * 0.0633, 45),
-                                        color: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(100.0)),
-                                        onPressed: () {
-                                          audioButton.play('som_botao.mp3');
-                                        },
-                                        child: Icon(
-                                          FontAwesomeIcons.volumeUp,
-                                          size:
-                                              _maxValue(size.width * 0.047, 35),
-                                          color: Color(0xff54c4b7),
-                                        ),
-                                      ),
                                       Padding(
                                         padding: EdgeInsets.only(
                                             left: size.width * 0.015),

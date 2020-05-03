@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class SemConexao extends StatefulWidget {
+class NoConnection extends StatefulWidget {
   @override
-  _SemConexaoState createState() => _SemConexaoState();
+  _NoConnectionState createState() => _NoConnectionState();
 }
 
-class _SemConexaoState extends State<SemConexao> {
+class _NoConnectionState extends State<NoConnection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +19,10 @@ class _SemConexaoState extends State<SemConexao> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(),
-                  child: Image.asset("images/logoRedonda.png", height: 250.0,),
+                  child: Image.asset(
+                    "images/logoRedonda.png",
+                    height: 250.0,
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(),
