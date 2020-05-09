@@ -1,5 +1,6 @@
 import 'package:abc_kids/pages/cardLearnPronunciation.dart';
 import 'package:abc_kids/pages/homePage.dart';
+import 'package:abc_kids/widgets/musicBackground.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -105,7 +106,7 @@ class _ModuleLearnPronunciationState extends State<ModuleLearnPronunciation> {
                               borderRadius: BorderRadius.circular(15.0)),
                           onPressed: () {
                             audioButton.play('som_botao.mp3');
-
+                            MusicBackground.incrementVolume();
                             Navigator.pop(
                               context,
                               MaterialPageRoute(

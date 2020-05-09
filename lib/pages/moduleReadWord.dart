@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:abc_kids/pages/cardReadWord.dart';
 import 'package:abc_kids/widgets/loading.dart';
+import 'package:abc_kids/widgets/musicBackground.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:abc_kids/widgets/backgroundImage.dart';
@@ -256,6 +259,7 @@ class _ModuleReadWordState extends State<ModuleReadWord> {
                                   borderRadius: BorderRadius.circular(15.0)),
                               onPressed: () {
                                 audioButton.play('som_botao.mp3');
+                                MusicBackground.incrementVolume();
                                 Navigator.pop(context, CardReadWord());
                               },
                               child: Row(
@@ -305,6 +309,8 @@ class _ModuleReadWordState extends State<ModuleReadWord> {
                                   audioAnswer.play(
                                       'audios_explicacao/voceTerminouEsteNivelEscolhaoProximoNivelParaJogar.mp3');
                                   _alertYouFinishedThisLevel();
+                                  var timer = Timer(Duration(seconds: 5),
+                                      () => MusicBackground.incrementVolume());
                                 }
                               },
                               child: Row(

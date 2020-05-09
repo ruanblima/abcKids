@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:abc_kids/pages/moduleReadWord.dart';
+import 'package:abc_kids/widgets/musicBackground.dart';
 import 'package:flutter/material.dart';
 import 'package:abc_kids/widgets/backgroundImage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -102,10 +105,17 @@ class _CardReadWordState extends State<CardReadWord> {
     });
   }
 
+  reproduceAudioInitial() {
+    MusicBackground.decrementVolume();
+    audioExplainingCard.play("audios_explicacao/audioCardLerPalavra.mp3");
+    var timer =
+        Timer(Duration(seconds: 2), () => MusicBackground.incrementVolume());
+  }
+
   @override
   void initState() {
     super.initState();
-    audioExplainingCard.play("audios_explicacao/audioCardLerPalavra.mp3");
+    reproduceAudioInitial();
     SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
@@ -157,8 +167,12 @@ class _CardReadWordState extends State<CardReadWord> {
                                     borderRadius: BorderRadius.circular(100.0)),
                                 onPressed: () {
                                   audioButton.play("som_botao.mp3");
+                                  MusicBackground.decrementVolume();
+
                                   audioToChooseLevel.play(
-                                      "audios_explicacao/audioEscolherlevel.mp3");
+                                      "audios_explicacao/audioEscolherNivel.mp3");
+                                  var timer = Timer(Duration(seconds: 3),
+                                      () => MusicBackground.incrementVolume());
                                 },
                                 child: Icon(
                                   FontAwesomeIcons.question,
@@ -343,6 +357,9 @@ class _CardReadWordState extends State<CardReadWord> {
                                               audioToChooseLevel.play(
                                                   'audios_explicacao/escolhalevel.mp3');
                                             } else {
+                                              audioButton.play('som_botao.mp3');
+                                              MusicBackground
+                                                  .decrementVolumeTotal();
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(

@@ -53,6 +53,14 @@ class MusicBackground {
     player?.setVolume(0.03);
   }
 
+  static void decrementVolumeTotal() {
+    _decrementVolumeTotal();
+  }
+
+  static void _decrementVolumeTotal() {
+    player?.setVolume(0);
+  }
+
   static void incrementVolume() {
     _incrementVolume();
   }

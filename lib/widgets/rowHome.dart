@@ -116,15 +116,6 @@ class _RowHomeState extends State<RowHome> {
     });
   }
 
-  _incrementVolume() {
-    MusicBackground.incrementVolume();
-  }
-
-  Future<Timer> loadData() async {
-    MusicBackground.decrementVolume();
-    return new Timer(Duration(seconds: 5), _incrementVolume());
-  }
-
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
@@ -147,10 +138,11 @@ class _RowHomeState extends State<RowHome> {
                   borderRadius: BorderRadius.circular(100.0)),
               onPressed: () {
                 audioButton.play('som_botao.mp3');
-
+                MusicBackground.decrementVolume();
                 audioExplainingInitialScreen
                     .play("audios_explicacao/audioParaTelaInicial.mp3");
-                loadData();
+                var timer = Timer(Duration(seconds: 2),
+                    () => MusicBackground.incrementVolume());
               },
               child: Icon(
                 FontAwesomeIcons.question,

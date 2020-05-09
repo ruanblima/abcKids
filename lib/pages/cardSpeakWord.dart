@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:abc_kids/pages/moduleSpeakWord.dart';
+import 'package:abc_kids/widgets/musicBackground.dart';
 import 'package:flutter/material.dart';
 import 'package:abc_kids/widgets/backgroundImage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -102,10 +105,17 @@ class _CardSpeakWordState extends State<CardSpeakWord> {
     });
   }
 
+  reproduceAudioInitial() {
+    MusicBackground.decrementVolume();
+    audioExplainingCard.play("audios_explicacao/audioCardFalarPalavra.mp3");
+    var timer =
+        Timer(Duration(seconds: 2), () => MusicBackground.incrementVolume());
+  }
+
   @override
   void initState() {
     super.initState();
-    audioExplainingCard.play("audios_explicacao/audioCardFalarPalavra.mp3");
+    reproduceAudioInitial();
     SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
@@ -157,8 +167,11 @@ class _CardSpeakWordState extends State<CardSpeakWord> {
                                     borderRadius: BorderRadius.circular(100.0)),
                                 onPressed: () {
                                   audioButton.play("som_botao.mp3");
+                                  MusicBackground.decrementVolume();
                                   audioToChooseLevel.play(
                                       "audios_explicacao/audioEscolherNivel.mp3");
+                                  var timer = Timer(Duration(seconds: 3),
+                                      () => MusicBackground.incrementVolume());
                                 },
                                 child: Icon(
                                   FontAwesomeIcons.question,
@@ -334,6 +347,9 @@ class _CardSpeakWordState extends State<CardSpeakWord> {
                                               audioToChooseLevel.play(
                                                   'audios_explicacao/escolhaNivel.mp3');
                                             } else {
+                                              audioButton.play('som_botao.mp3');
+                                              MusicBackground
+                                                  .decrementVolumeTotal();
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
