@@ -80,6 +80,13 @@ class _CardLearnPronunciationState extends State<CardLearnPronunciation> {
         Timer(Duration(seconds: 2), () => MusicBackground.incrementVolume());
   }
 
+  updateModeScreen(modeScreen) {
+    setState(() {
+      modeScreen = modeScreen;
+    });
+    _addEdge();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -94,8 +101,6 @@ class _CardLearnPronunciationState extends State<CardLearnPronunciation> {
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     Size size = mediaQuery.size;
-
-    print("aqui: " + modeScreen);
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -270,8 +275,10 @@ class _CardLearnPronunciationState extends State<CardLearnPronunciation> {
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder: (context) =>
+                                                      builder: (_) =>
                                                           ModuleLearnPronunciation(
+                                                            updateModeScreen:
+                                                                updateModeScreen,
                                                             modeScreen:
                                                                 modeScreen,
                                                           )));

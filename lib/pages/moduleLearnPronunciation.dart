@@ -10,12 +10,14 @@ import 'package:audioplayers/audio_cache.dart';
 
 class ModuleLearnPronunciation extends StatefulWidget {
   final String modeScreen;
+  final Function updateModeScreen;
 
-  ModuleLearnPronunciation({Key key, @required this.modeScreen})
+  ModuleLearnPronunciation(
+      {Key key, @required this.modeScreen, this.updateModeScreen})
       : super(key: key);
   @override
   _ModuleLearnPronunciationState createState() =>
-      _ModuleLearnPronunciationState(modeScreen);
+      _ModuleLearnPronunciationState(modeScreen, updateModeScreen);
 }
 
 class _ModuleLearnPronunciationState extends State<ModuleLearnPronunciation> {
@@ -23,7 +25,8 @@ class _ModuleLearnPronunciationState extends State<ModuleLearnPronunciation> {
   static AudioCache audioLetra = new AudioCache(prefix: "audios/");
 
   String modeScreen;
-  _ModuleLearnPronunciationState(this.modeScreen);
+  Function updateModeScreen;
+  _ModuleLearnPronunciationState(this.modeScreen, this.updateModeScreen);
 
   var shape1 =
       RoundedRectangleBorder(borderRadius: BorderRadius.circular(200.0));
@@ -107,14 +110,8 @@ class _ModuleLearnPronunciationState extends State<ModuleLearnPronunciation> {
                           onPressed: () {
                             audioButton.play('som_botao.mp3');
                             MusicBackground.incrementVolume();
-                            Navigator.pop(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CardLearnPronunciation(
-                                  modeScreen: modeScreen,
-                                ),
-                              ),
-                            );
+                            updateModeScreen(modeScreen);
+                            Navigator.pop(context);
                           },
                           label: AutoSizeText(
                             "Voltar",

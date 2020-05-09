@@ -196,7 +196,6 @@ class _ModuleEnterWordState extends State<ModuleEnterWord> {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     Size size = mediaQuery.size;
 
-    print("aqui: ${size.width * 0.032}");
     return StreamBuilder(
         stream: Firestore.instance.collection(level).snapshots(),
         builder: (context, snapshot) {
